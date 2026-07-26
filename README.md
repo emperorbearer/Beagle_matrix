@@ -17,12 +17,13 @@ Runs on a Raspberry Pi 4 or a PocketBeagle 2 (selectable driver layer).
 
 - **frontend/** — Svelte + Vite 웹 UI. 문자 입력(색상·속도·크기), 영상 업로드/재생, 실시간 미리보기(WebSocket).
 - **backend/** — Python FastAPI 서버. 텍스트 → 픽셀 렌더링(Pillow), 영상 → 프레임 디코딩(ffmpeg), 디스플레이 루프.
-- **backend/app/driver/** — 매트릭스 드라이버 계층. `sim`(시뮬레이터) / `rpi`(Pi 4 + [rpi-rgb-led-matrix](https://github.com/hzeller/rpi-rgb-led-matrix)) / `pb2`(PocketBeagle 2 + PRU).
+- **backend/app/driver/** — 매트릭스 드라이버 계층. `sim`(시뮬레이터) / `rpi`(Pi 4 + [rpi-rgb-led-matrix](https://github.com/hzeller/rpi-rgb-led-matrix)) / `pb2`(PocketBeagle 2 + PRU) / `colorlight`(Colorlight 5A-75B/E FPGA 리시버 카드).
 - **pru/** — PB2 경로용 PRU 펌웨어 (개발 예정).
 - **docs/hardware.md** — 하드웨어 설계: 플랫폼 선택 가이드, 부품 목록, 배선, 전원, 최대 해상도 분석.
 
 플랫폼별 트레이드오프(최대 해상도, 개발 기간, 타이밍 품질)는 [docs/hardware.md](docs/hardware.md) §1 참고.
-요약: 빨리 크게 만들려면 Pi 4 (병렬 3체인, 256×192급 실증), PRU 펌웨어 개발이 목적이면 PB2.
+요약: 대형·고해상도는 Colorlight 리시버 카드(카드당 512×256급, 종합 추천), 소규모는 Pi 4 GPIO
+직결(256×192급 실증), PRU 펌웨어 개발이 목적이면 PB2.
 
 ## 개발 환경에서 실행 (하드웨어 없이)
 
@@ -62,6 +63,13 @@ MATRIX_DRIVER=rpi MATRIX_WIDTH=128 MATRIX_HEIGHT=64 \
   sudo -E uvicorn app.main:app --host 0.0.0.0 --port 80
 ```
 
+**Colorlight 5A-75B/E 리시버 카드** (카드 설정은 [docs/hardware.md](docs/hardware.md) §5.3):
+
+```bash
+MATRIX_DRIVER=colorlight COLORLIGHT_IFACE=eth0 MATRIX_WIDTH=256 MATRIX_HEIGHT=128 \
+  sudo -E uvicorn app.main:app --host 0.0.0.0 --port 80
+```
+
 **PocketBeagle 2**:
 
 ```bash
@@ -78,7 +86,7 @@ MATRIX_DRIVER=pb2 uvicorn app.main:app --host 0.0.0.0 --port 80
 |---|---|---|
 | `MATRIX_WIDTH` | `128` | 전체 가로 픽셀 수 |
 | `MATRIX_HEIGHT` | `64` | 전체 세로 픽셀 수 |
-| `MATRIX_DRIVER` | `sim` | `sim` / `rpi` / `pb2` |
+| `MATRIX_DRIVER` | `sim` | `sim` / `rpi` / `pb2` / `colorlight` |
 | `MATRIX_FPS` | `30` | 콘텐츠 프레임레이트 |
 | `MATRIX_BRIGHTNESS` | `100` | 밝기 0~100 (`rpi` 드라이버) |
 | `MATRIX_PANEL_COLS` | `64` | 패널 1장의 가로 픽셀 (`rpi`: 체인/병렬 수 자동 계산) |
@@ -86,6 +94,7 @@ MATRIX_DRIVER=pb2 uvicorn app.main:app --host 0.0.0.0 --port 80
 | `RPI_HARDWARE_MAPPING` | `regular` | `regular`(Active-3) / `adafruit-hat` / `adafruit-hat-pwm` |
 | `RPI_GPIO_SLOWDOWN` | `4` | Pi 4 권장 4, 깜빡이면 5 |
 | `RPI_PWM_BITS` | `11` | 큰 해상도에서 8~9로 낮추면 리프레시 상승 |
+| `COLORLIGHT_IFACE` | `eth0` | `colorlight` 드라이버가 패킷을 내보낼 랜 인터페이스 |
 | `FONT_PATH` | (자동) | TTF 폰트 경로. 한글은 예: `/usr/share/fonts/truetype/nanum/NanumGothic.ttf` |
 | `UPLOAD_DIR` | `uploads` | 업로드 영상 저장 위치 |
 

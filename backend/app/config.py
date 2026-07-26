@@ -4,8 +4,12 @@ from pathlib import Path
 MATRIX_WIDTH = int(os.environ.get("MATRIX_WIDTH", "128"))
 MATRIX_HEIGHT = int(os.environ.get("MATRIX_HEIGHT", "64"))
 
-# sim: 시뮬레이터(기본) / rpi: 라즈베리파이 + rpi-rgb-led-matrix / pb2: PocketBeagle 2 + PRU
+# sim: 시뮬레이터(기본) / rpi: 라즈베리파이 + rpi-rgb-led-matrix
+# / pb2: PocketBeagle 2 + PRU / colorlight: Colorlight 5A-75B/E 리시버 카드
 MATRIX_DRIVER = os.environ.get("MATRIX_DRIVER", "sim")
+
+# colorlight 드라이버가 패킷을 내보낼 랜 인터페이스 (카드 직결 권장)
+COLORLIGHT_IFACE = os.environ.get("COLORLIGHT_IFACE", "eth0")
 MATRIX_FPS = int(os.environ.get("MATRIX_FPS", "30"))
 MATRIX_BRIGHTNESS = int(os.environ.get("MATRIX_BRIGHTNESS", "100"))
 

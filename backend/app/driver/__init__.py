@@ -13,6 +13,12 @@ def create_driver() -> MatrixDriver:
         from .hub75_pru import Hub75PruDriver
 
         return Hub75PruDriver(config.MATRIX_WIDTH, config.MATRIX_HEIGHT)
+    if name == "colorlight":
+        from .colorlight import ColorlightDriver
+
+        return ColorlightDriver(config.MATRIX_WIDTH, config.MATRIX_HEIGHT)
     if name == "sim":
         return SimulatorDriver(config.MATRIX_WIDTH, config.MATRIX_HEIGHT)
-    raise ValueError(f"알 수 없는 MATRIX_DRIVER: {name} (sim | rpi | pb2 중 선택)")
+    raise ValueError(
+        f"알 수 없는 MATRIX_DRIVER: {name} (sim | rpi | pb2 | colorlight 중 선택)"
+    )
