@@ -3,8 +3,20 @@ from pathlib import Path
 
 MATRIX_WIDTH = int(os.environ.get("MATRIX_WIDTH", "128"))
 MATRIX_HEIGHT = int(os.environ.get("MATRIX_HEIGHT", "64"))
+
+# sim: 시뮬레이터(기본) / rpi: 라즈베리파이 + rpi-rgb-led-matrix / pb2: PocketBeagle 2 + PRU
 MATRIX_DRIVER = os.environ.get("MATRIX_DRIVER", "sim")
 MATRIX_FPS = int(os.environ.get("MATRIX_FPS", "30"))
+MATRIX_BRIGHTNESS = int(os.environ.get("MATRIX_BRIGHTNESS", "100"))
+
+# 패널 1장의 크기 — 체인/병렬 수는 전체 해상도에서 자동 계산
+MATRIX_PANEL_COLS = int(os.environ.get("MATRIX_PANEL_COLS", "64"))
+MATRIX_PANEL_ROWS = int(os.environ.get("MATRIX_PANEL_ROWS", "64"))
+
+# rpi 드라이버 옵션 (hzeller rpi-rgb-led-matrix)
+RPI_HARDWARE_MAPPING = os.environ.get("RPI_HARDWARE_MAPPING", "regular")
+RPI_GPIO_SLOWDOWN = int(os.environ.get("RPI_GPIO_SLOWDOWN", "4"))
+RPI_PWM_BITS = int(os.environ.get("RPI_PWM_BITS", "11"))
 
 # 한글 출력 시 예: /usr/share/fonts/truetype/nanum/NanumGothic.ttf
 FONT_PATH = os.environ.get("FONT_PATH", "")
