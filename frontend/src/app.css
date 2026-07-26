@@ -1,0 +1,53 @@
+:root {
+  color-scheme: dark;
+  font-family: system-ui, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+}
+
+body {
+  margin: 0;
+  background: #111318;
+  color: #e6e8ee;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  background: #2f6fed;
+  color: white;
+}
+
+button.secondary {
+  background: #2a2e3a;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+input,
+select {
+  font: inherit;
+  background: #1b1e27;
+  color: inherit;
+  border: 1px solid #333846;
+  border-radius: 8px;
+  padding: 0.45rem 0.6rem;
+}
+
+input[type='color'] {
+  padding: 0.1rem;
+  width: 3rem;
+  height: 2.2rem;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+  color: #9aa1b2;
+}
